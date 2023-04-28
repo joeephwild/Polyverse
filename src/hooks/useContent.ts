@@ -5,7 +5,7 @@ import { Model } from "../types";
 import { getAddressFromDid } from "../utils";
 
 export function useContent(appName: string) {
-  const { runtimeConnector } = useContext(Context);
+  const { runtimeConnector, datatokenClient } = useContext(Context);
 
   const [contentRecord, setContentRecord] = useState<
     Record<string, MirrorFile>
@@ -219,6 +219,7 @@ export function useContent(appName: string) {
     amount: number;
     collectLimit: number;
   }) => {
+    console.log(datatokenClient)
     let datatokenId;
     if (!profileId) {
       profileId = await getProfileId({ did, lensNickName });
@@ -229,11 +230,14 @@ export function useContent(appName: string) {
 
     try {
       const datatoken = await runtimeConnector.createDatatoken({
-        profileId,
-        streamId: mirrorFile.indexFileId,
-        currency,
-        amount,
-        collectLimit,
+        datatokenVars: {
+          profileId,
+          streamId: mirrorFile.indexFileId,
+          currency,
+          amount,
+          collectLimit,
+        },
+        datatokenClient,
       });
       datatokenId = datatoken.datatokenId;
     } catch (error: any) {
@@ -436,6 +440,7 @@ export function useContent(appName: string) {
       did,
       appName,
       indexFileId: content.indexFileId,
+      datatokenClient
     });
 
     content.content = res;
