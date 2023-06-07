@@ -1,70 +1,35 @@
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #fff;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+@layer utilities {
+  .border-gradient {
+    border-image: linear-gradient(to right, #513EFF, #52E5FF);
+    border-image-slice: 1;
+  }
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+.page1 {
+  @apply bg-gradient-to-r from-[#513EFF] to-[#52E5FF];
 }
-a:hover {
-  color: #535bf2;
+
+.page2 {
+  @apply bg-gradient-to-r from-[#FC83A7] to-[#52E5FF];
+}
+
+.page3 {
+  @apply bg-gradient-to-r from-[#8212A9] to-[#F3D7FD];
+}
+
+.page4 {
+  @apply bg-gradient-to-r from-[#E4FF3E] to-[#52E5FF];
+}
+
+.page5 {
+  @apply bg-gradient-to-r from-[#FB9778] to-[#52E5FF];
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  @apply bg-[#121212] text-[#fff];
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}

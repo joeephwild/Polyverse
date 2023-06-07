@@ -4,14 +4,18 @@ import {
   Currency,
   MirrorFile,
   CRYPTO_WALLET,
-  StreamContent
+  StreamContent,
+  RuntimeConnector,
+  Extension
 } from "@dataverse/runtime-connector";
 import { Context } from "../main";
 import { Model } from "../types";
 import { getAddressFromPkh } from "../utils";
+import { usePolyverseContext } from "../context";
 
 export function useStream(appName: string, wallet?: CRYPTO_WALLET) {
-  const { runtimeConnector } = useContext(Context);
+/** Initialize the runtime connector class object */
+const runtimeConnector = new RuntimeConnector(Extension);
   const [pkh, setPkh] = useState("");
   const [streamRecord, setStreamRecord] = useState<Record<string, MirrorFile>>(
     {}

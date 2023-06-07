@@ -1,9 +1,11 @@
-import { CRYPTO_WALLET, Mode } from "@dataverse/runtime-connector";
+import { CRYPTO_WALLET, Extension, Mode, RuntimeConnector } from "@dataverse/runtime-connector";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
+import { usePolyverseContext } from "../context";
 
 export function useWallet() {
-  const { runtimeConnector } = useContext(Context);
+/** Initialize the runtime connector class object */
+const runtimeConnector = new RuntimeConnector(Extension);
   const [wallet, setWallet] = useState<CRYPTO_WALLET>();
 
   const selectWallet = async () => {
