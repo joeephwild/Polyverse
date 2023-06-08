@@ -16,7 +16,9 @@ const Navbar = () => {
   const { connectWallet, switchNetwork, wallet } = useWallet();
   const { createCapability } = useStream(app.createDapp.name, wallet);
   const connect = async () => {
-    
+  const address =  await runtimeConnector.selectWallet()
+    await runtimeConnector.switchNetwork(3141);
+  console.log(address)
   };
   return (
     <nav className="w-full flex items-center h-16 justify-between px-12 py-6.5 border-b border-[#ffffff]">
