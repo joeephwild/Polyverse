@@ -2,7 +2,7 @@ import { Header, Navbar, ProtectedRoute } from "./components";
 import React from "react";
 import { useWallet } from "./hooks";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home, SignIn } from "./pages";
+import { Home, SignIn, VideoPlayer } from "./pages";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
@@ -18,7 +18,9 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           }
-        />
+       >
+       </Route>
+       <Route path="/dashboard/video" element={<VideoPlayer />} />
       </Routes>
     </BrowserRouter>
   );

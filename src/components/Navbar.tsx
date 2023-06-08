@@ -10,15 +10,13 @@ import { useStream } from "../hooks/useStream";
 import app from "../../output/app.json";
 import { Link } from "react-router-dom";
 
+const runtimeConnector = new RuntimeConnector(Extension);
+
 const Navbar = () => {
   const { connectWallet, switchNetwork, wallet } = useWallet();
   const { createCapability } = useStream(app.createDapp.name, wallet);
   const connect = async () => {
-    await connectWallet();
-    await switchNetwork(3141);
-    const pkh = await createCapability();
-    console.log("pkh:", pkh);
-    return pkh;
+    
   };
   return (
     <nav className="w-full flex items-center h-16 justify-between px-12 py-6.5 border-b border-[#ffffff]">

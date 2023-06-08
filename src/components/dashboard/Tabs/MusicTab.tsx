@@ -22,6 +22,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isShuffling, setIsShuffling] = useState(false)
 
   useEffect(() => {
     const activeSongId = localStorage.getItem("activeSongId");
@@ -57,6 +58,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
     const shuffledSongs = [...songs].sort(() => Math.random() - 0.5);
     setActive(shuffledSongs[0]);
     setIsPlaying(true);
+    setIsShuffling(true)
     if (audioRef.current) {
       audioRef.current.src = shuffledSongs[0].url;
       audioRef.current.play();
@@ -117,7 +119,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
 
   return (
     <>
-      <div className="mt-[20px] bg-gradient-to-b from-[#362239] to-[#3F3A3A] max-w-7xl h-[510px] mx-auto">
+      <div className="mt-[20px] bg-gradient-to-b from-[#362239] to-[#3F3A3A] max-w-7xl h-[510px] mx-9">
         <table className="table-auto cursor-pointer w-full">
           <thead>
             <tr>
@@ -189,6 +191,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
             setDuration={setDuration}
             setCurrentTime={setCurrentTime}
             setIsPlaying={setIsPlaying}
+            isShuffling={isShuffling}
           />
       )}
       <audio ref={audioRef} />

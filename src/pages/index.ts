@@ -1,3 +1,4 @@
 export { default as Home } from './Home'
 export { default as SignIn } from './SignIn'
-import { default as Dashboard } from './Dashboard'
+export { default as Dashboard } from './Dashboard'
+export { default as VideoPlayer } from './VideoPlayer'
