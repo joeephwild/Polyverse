@@ -4,3 +4,6 @@ export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as DNavbar } from "./dashboard/DNavbar";
 export { default as MainBody } from "./MainBody";
 export { default as Sidebar } from "./Sidebar";
+export { default as MusicPlayer } from "./dashboard/MusicPlayer";
+export { default as MusicTab } from './dashboard/Tabs/MusicTab'
+export { default as VideoTab } from './dashboard/Tabs/VideoTab'

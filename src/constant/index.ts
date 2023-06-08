@@ -1,6 +1,6 @@
 import { page1, page2, page3, page4, page5 } from "../assets";
 
-export const Section = [
+ const Section = [
     {
         title: "Top Songs",
         image: page1,
@@ -32,3 +32,31 @@ export const Section = [
         active: "virtual"
     }
 ]
+
+const Tabs = [
+    {
+        name: "Songs",
+        active: "music"
+    },
+    {
+        name: "Podcast",
+        active: "podcast"
+    },
+    {
+        name: "Videos",
+        active: "videos"
+    },
+    {
+        name: "Live events",
+        active: "event"
+    },
+    {
+        name: "Virtual town",
+        active: "virtual"
+    },
+]
+
+export {
+    Tabs,
+    Section
+}

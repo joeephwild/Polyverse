@@ -30,6 +30,6 @@
 }
 
 body {
-  @apply bg-[#121212] text-[#fff];
+  @apply bg-[#121212] text-[#fff] overflow-hidden;
 }
 
