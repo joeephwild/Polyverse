@@ -3,6 +3,7 @@ import { Section, Tabs } from "../constant";
 import MusicTab from "./dashboard/Tabs/MusicTab";
 import VideoTab from "./dashboard/Tabs/VideoTab";
 import { page1 } from "../assets";
+import LiveTab from "./dashboard/Tabs/LiveTab";
 
 const MainBody = () => {
   const [active, setActive] = useState("music");
@@ -101,6 +102,7 @@ const MainBody = () => {
           </div>
           {activeTab === "music" && <MusicTab songs={songs} />}
           {activeTab === "videos" && <VideoTab />}
+          {activeTab === "event" && <LiveTab />}
         </div>
         <div className="w-1/4 h-screen mt-[53px] items-start border-l border-[#D9D9D9]">
           <h1 className="border-y border-[#D9D9D9] py-4 px-2.5">Your Ticket</h1>

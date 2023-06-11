@@ -9,7 +9,7 @@ const Header = () => {
         <img src={headerimg} alt="hero" className="w-full" />
       </div>
       <div className="max-w-7l flex flex-col items-center">
-        <h1 className="text-[48px] xl:text-[53px] my-[40px] font-bold ">
+        <h1 className="text-[48px] font-Inter-Bold xl:text-[53px] my-[40px] font-bold ">
           Where Heroes{" "}
           <span className="bg-gradient-to-tr from-[#513EFF] to-[#52E5FF] bg-clip-text text-transparent w-full">
             {" "}

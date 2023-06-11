@@ -28,6 +28,7 @@ interface MusicPlayerProps {
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   isShuffling: boolean;
+  refPath: any
 }
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({
@@ -45,7 +46,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setCurrentTime,
   setIsPlaying,
   isShuffling,
+  refPath
 }) => {
+  console.log(song.url)
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -128,6 +131,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </button>
           </div>
         </div>
+        <audio ref={refPath} src={song.url} />
 
         <button title="volume" className="items-start">
             <BsFillVolumeOffFill size={26} />

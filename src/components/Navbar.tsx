@@ -9,17 +9,11 @@ import { useWallet } from "../hooks/useWallet";
 import { useStream } from "../hooks/useStream";
 import app from "../../output/app.json";
 import { Link } from "react-router-dom";
+import { PARTICLE } from "@dataverse/runtime-connector";
 
 const runtimeConnector = new RuntimeConnector(Extension);
 
 const Navbar = () => {
-  const { connectWallet, switchNetwork, wallet } = useWallet();
-  const { createCapability } = useStream(app.createDapp.name, wallet);
-  const connect = async () => {
-  const address =  await runtimeConnector.selectWallet()
-    await runtimeConnector.switchNetwork(3141);
-  console.log(address)
-  };
   return (
     <nav className="w-full flex items-center h-16 justify-between px-12 py-6.5 border-b border-[#ffffff]">
       <Link to="/">
@@ -33,7 +27,6 @@ const Navbar = () => {
       </ul>
 
       <button
-        onClick={connect}
         className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]"
       >
         Connect Wallet

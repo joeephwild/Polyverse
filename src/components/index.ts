@@ -8,3 +8,6 @@ export { default as MusicPlayer } from "./dashboard/MusicPlayer";
 export { default as MusicTab } from "./dashboard/Tabs/MusicTab";
 export { default as VideoTab } from "./dashboard/Tabs/VideoTab";
 export { default as Video } from "./Video";
+export { default as LiveTab } from "./dashboard/Tabs/LiveTab";
+export { default as Ticket } from "./Ticket";
+export { default as Virtual } from "./Virtual";

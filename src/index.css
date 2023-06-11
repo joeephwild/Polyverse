@@ -9,6 +9,16 @@
   }
 }
 
+@font-face {
+  font-family: Inter-VariableFont ;
+  src: url("./assets/Inter-Medium.ttf");
+}
+
+@font-face {
+  font-family: Inter-Bold;
+  src: url("./assets/Inter-Bold.ttf");
+}
+
 .page1 {
   @apply bg-gradient-to-r from-[#513EFF] to-[#52E5FF];
 }
@@ -30,6 +40,6 @@
 }
 
 body {
-  @apply bg-[#121212] text-[#fff] overflow-hidden;
+  @apply bg-[#121212] text-[#fff] overflow-hidden font-Inter-VariableFont;
 }
 

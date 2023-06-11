@@ -152,7 +152,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
                         active && active.id === song.id
                           ? "text-[#35F415]"
                           : "text-white"
-                      } text-[18px] font-bold`}
+                      } text-[18px] font-Inter-Bold font-bold`}
                     >
                       {song.title}
                     </span>
@@ -192,9 +192,10 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
             setCurrentTime={setCurrentTime}
             setIsPlaying={setIsPlaying}
             isShuffling={isShuffling}
+            refPath={audioRef}
           />
       )}
-      <audio ref={audioRef} />
+    
     </>
   );
 };
