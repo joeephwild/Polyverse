@@ -11,7 +11,7 @@ const ProfileDetail = () => {
     <div className="flex-1 px-6 py-2.5">
       <p>Profile</p>
       <div className="flex mt-6 space-x-9 items-center justify-evenly w-full">
-        <div className="flex mt-6 space-x-9 items-center w-full">
+        <div className="flex space-x-9 items-center w-full">
           <img
             src={page1}
             alt=""

@@ -4,6 +4,7 @@ import MusicTab from "./dashboard/Tabs/MusicTab";
 import VideoTab from "./dashboard/Tabs/VideoTab";
 import { page1 } from "../assets";
 import LiveTab from "./dashboard/Tabs/LiveTab";
+import Content from "./Content";
 
 const MainBody = () => {
   const [active, setActive] = useState("music");
@@ -35,7 +36,7 @@ const MainBody = () => {
       duration: "3:45",
       album: "The other halves",
       url: "https://cdn.tunezjam.com/audio/Sarz-Good-To-Me-Ft-Perfext-And-Gimba-(TunezJam.com).mp3",
-      date: "20-10-1999"
+      date: "20-10-1999",
     },
     {
       id: 2,
@@ -44,7 +45,7 @@ const MainBody = () => {
       duration: "4:20",
       album: "The other halves",
       url: "https://cdn.tunezjam.com/audio/Burna-Boy-Ft-J-Balvin-Rollercoaster-(TunezJam.com).mp3",
-      date: "20-10-1999"
+      date: "20-10-1999",
     },
     {
       id: 3,
@@ -53,7 +54,7 @@ const MainBody = () => {
       duration: "2:57",
       album: "The other halves",
       url: "https://cdn.tunezjam.com/audio/Rema-Spiderman--[TunezJam.com].mp3",
-      date: "20-10-1999"
+      date: "20-10-1999",
     },
   ];
   return (
@@ -82,28 +83,7 @@ const MainBody = () => {
 
       <div className="flex items-center w-full">
         {/** music components */}
-        <div className="flex-1 w-full h-screen">
-          <div className="flex items-start border-y border-r border-[#D9D9D9] border-spacing-y-12 py-4 mt-[30px]">
-            <div className="flex items-center w-full  space-x-[30px] px-4">
-              {Tabs.map((item: any, i: any) => (
-                <p
-                  onClick={() => handleTabClick(item.active)}
-                  key={i}
-                  className={`${
-                    activeTab === item.active
-                      ? "bg-gradient-to-r from-[#513EFF] to-[#52E5FF] bg-clip-text text-transparent"
-                      : "text-[#fff]"
-                  } text-[16px] font-extrabold cursor-pointer flex items-center w-full justify-between`}
-                >
-                  {item.name}
-                </p>
-              ))}
-            </div>
-          </div>
-          {activeTab === "music" && <MusicTab songs={songs} />}
-          {activeTab === "videos" && <VideoTab />}
-          {activeTab === "event" && <LiveTab />}
-        </div>
+        <Content />
         <div className="w-1/4 h-screen mt-[53px] items-start border-l border-[#D9D9D9]">
           <h1 className="border-y border-[#D9D9D9] py-4 px-2.5">Your Ticket</h1>
           <div className="flex flex-col items-center space-y-7">
@@ -111,7 +91,9 @@ const MainBody = () => {
             <div className="!min-w-[354px] bg-gradient-to-b mt-9 from-[#362239] to-[#3F3A3A] border border-[#fff] px-6 py-3.5 rounded-[10px]">
               <div className="flex items-center justify-between space-x-3">
                 <div className="flex flex-col items-start">
-                  <h1 className="text-[16px] font-bold text-[#fff]">Dubai Live Concert</h1>
+                  <h1 className="text-[16px] font-bold text-[#fff]">
+                    Dubai Live Concert
+                  </h1>
                   <span className="bg-gradient-to-r from-[#513EFF] to-[#52E5FF] bg-clip-text text-transparent text-[12px] font-bold">
                     Ticket no: <span className="text-[#fff]">weu8fbff9vv</span>
                   </span>
@@ -131,6 +113,7 @@ const MainBody = () => {
             </div>
             {/** ticket end */}
           </div>
+          C
         </div>
       </div>
     </div>

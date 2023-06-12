@@ -130,6 +130,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
               </th>
               <th className="px-4 py-2 text-start">Album</th>
               <th className="px-4 py-2 text-start">Date</th>
+              <th className="px-4 py-2 text-start"></th>
             </tr>
           </thead>
           <tbody>
@@ -175,6 +176,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
                 </td>
                 <td className="px-4 py-2 text-start">{song.album}</td>
                 <td className="px-4 py-2 text-start">{song.date}</td>
+                <td className="px-4 py-2 text-start text-[#35F415] text-[16px]">Subscribe</td>
               </tr>
             ))}
           </tbody>
