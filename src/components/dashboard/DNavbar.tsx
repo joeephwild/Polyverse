@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { logo, profile } from "../../assets";
 import { Link } from "react-router-dom";
-import { MdOutlineSubscriptions } from 'react-icons/md'
-import { CgProfile } from 'react-icons/cg'
-import { TiTicket } from 'react-icons/ti'
+import { MdOutlineSubscriptions } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import { TiTicket } from "react-icons/ti";
 import { IconType } from "react-icons/lib";
+import { ethers } from "ethers";
+import { usePolyverseContext } from "../../context/Auth";
 
 interface Link {
-  icons: IconType
-  title: string
-  route: string
+  icons: IconType;
+  title: string;
+  route: string;
 }
 
 const DNavbar = () => {
+  const { address, setAddress } = usePolyverseContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const getEnsName = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+     const name = await provider.lookupAddress("0x5555763613a12D8F3e73be831DFf8598089d3dCa");
+     console.log(name)
+    };
+  
+    getEnsName()
+  }, [])
+ 
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -27,20 +41,19 @@ const DNavbar = () => {
     {
       icons: MdOutlineSubscriptions,
       title: "Subscription",
-      route: ""
+      route: "",
     },
     {
       icons: CgProfile,
       title: "Profile",
-      route: ""
+      route: "",
     },
     {
       icons: TiTicket,
       title: "Ticket",
-      route: ""
-    }
-
-  ]
+      route: "",
+    },
+  ];
   return (
     <nav className="w-full flex items-center h-16 justify-between px-12 py-6.5 border-b border-[#ffffff]">
       <Link to="/">
@@ -55,7 +68,9 @@ const DNavbar = () => {
         <img onClick={openModal} src={profile} alt="profile" />
         {isModalOpen && (
           <div className="w-[322px] bg-[#121212] border border-[#fff] max-h-[525px] mb- absolute top-[60%] right-[90%]">
-            <div onClick={closeModal} className="flex items-end justify-end">x</div>
+            <div onClick={closeModal} className="flex items-end justify-end">
+              x
+            </div>
             <div className="flex items-start px-6 py-3.5 border-b border-[#fff] space-x-12">
               <div className="bg-gradient-to-b from-[#CB52F5] to-[#FE2828] w-[30px] h-[30px] rounded-full" />
               <h2>Account</h2>
@@ -69,7 +84,9 @@ const DNavbar = () => {
                   <div className="bg-green-500 w-4 h-4 rounded-full" />
                 </button>
               </div>
-              <span className="text-center items-center flex justify-center mb-5 text-[20px] font-semibold">10.00 USD</span>
+              <span className="text-center items-center flex justify-center mb-5 text-[20px] font-semibold">
+                10.00 USD
+              </span>
               <button className="w-full bg-gradient-to-r from-[#513EFF] to-[#52E5FF] text-white text-center items-center px-9 py-4.5  h-[49px]">
                 Add funds
               </button>
@@ -82,12 +99,14 @@ const DNavbar = () => {
                   <span>{item.title}</span>
                 </div>
               ))}
-              <button className="border border-[#FF9090] px-9 py-3.5">Logout</button>
+              <button className="border border-[#FF9090] px-9 py-3.5">
+                Logout
+              </button>
             </div>
           </div>
         )}
         <button className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]">
-          0x0000...
+          {address.slice(0,9)}...
         </button>
       </div>
     </nav>

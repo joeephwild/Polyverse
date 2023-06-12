@@ -11,3 +11,6 @@ export { default as Video } from "./Video";
 export { default as LiveTab } from "./dashboard/Tabs/LiveTab";
 export { default as Ticket } from "./Ticket";
 export { default as Virtual } from "./Virtual";
+export { default as ProfileDetail } from "./ProfileDetail";
+export { default as UserTicket } from "./UserTicket";
+export { default as Content } from "./Content";

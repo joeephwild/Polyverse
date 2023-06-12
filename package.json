@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/dataverse-os/create-dataverse-app#readme",
   "dependencies": {
-    "@dataverse/runtime-connector": "1.0.47",
+    "@dataverse/runtime-connector": "1.0.57",
+    "@ensdomains/ensjs": "^3.0.0-alpha.64",
     "@livepeer/react": "^2.5.4",
     "@particle-network/auth": "^0.13.5",
     "@particle-network/common": "^0.13.5",

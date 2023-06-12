@@ -1,18 +1,18 @@
 import React from "react";
-import { DNavbar, Sidebar, Ticket, UserTicket } from "../components";
+import { DNavbar, ProfileDetail, Sidebar, UserTicket } from "../components";
 import { page1 } from "../assets";
 
-const TicketDetails = () => {
+const Profile = () => {
   return (
-    <>
+    <div>
       <DNavbar />
       <div className="flex items-start">
         <Sidebar />
-        <Ticket />
+        <ProfileDetail />
         <UserTicket />
       </div>
-    </>
+    </div>
   );
 };
 
-export default TicketDetails;
+export default Profile;

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import MusicPlayer from "../MusicPlayer";
 import { page1, time } from "../../../assets";
+import { Link } from "react-router-dom";
 
 interface Song {
   id: number;
@@ -156,9 +157,11 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
                     >
                       {song.title}
                     </span>
+                    <Link to="/profile">
                     <span className="text-[#C4C4C4] text-[16px] font-medium leading-[19.32px]">
                       {song.artist}
                     </span>
+                    </Link>
                   </div>
                 </td>
                 <td
