@@ -1,13 +1,7 @@
 import { Extension, RuntimeConnector } from "@dataverse/runtime-connector";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { ENS } from "@ensdomains/ensjs";
 import { ethers } from "ethers";
 import { WALLET } from "@dataverse/runtime-connector";
-
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-const ENSInstance = new ENS();
-await ENSInstance.setProvider(provider);
 
 type PolyverseProviderProps = {
   children: React.ReactNode;
