@@ -21,8 +21,12 @@ export const PolyverseProvider = ({ children }: PolyverseProviderProps) => {
 
   useEffect(() => {
     const getAddres = async () => {
-      const wallet = await runtimeConnector.connectWallet(WALLET.METAMASK);
+      const wallet = await runtimeConnector.connectWallet(WALLET.PARTICLE);
       setAddress(wallet.address);
+      await runtimeConnector.createCapability({
+        app: "Polyverse",
+        wallet: WALLET.PARTICLE, // optional, if not connected
+      });
     };
     getAddres();
   }, []);
