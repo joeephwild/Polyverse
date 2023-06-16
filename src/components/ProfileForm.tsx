@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
-import FormField from './FormField';
-import { usePolyverseContext } from '../context/Auth';
-import { pen, upload } from '../assets';
-import { AiOutlineCamera } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import FormField from "./FormField";
+import { usePolyverseContext } from "../context/Auth";
+import { pen, upload } from "../assets";
+import { AiOutlineCamera } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const ProfileForm = () => {
-  const { address } = usePolyverseContext();
+  const { address, createCreator } = usePolyverseContext();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const category = [
     {
-      title: '',
-      value: '',
+      title: "",
+      value: "",
     },
     {
-      title: 'Creator',
-      value: 'Creator',
+      title: "Creator",
+      value: "Creator",
     },
     {
-      title: 'Follower',
-      value: 'Follower',
+      title: "Follower",
+      value: "Follower",
     },
   ];
 
-  const handleImageUpload = () => {
+  const handleImageUpload = async(e: any) => {
+    e.preventDefault()
     // Perform the image upload logic here
     // You can use the selectedImage state variable to access the uploaded image file
     // For example, you can use the Fetch API or an external library to upload the image to a server.
     // After the upload is complete, you can handle the response or perform any necessary actions.
+   await createCreator("jfjjfjffk", 6)
   };
 
   return (
@@ -42,12 +44,14 @@ const ProfileForm = () => {
                 type="file"
                 name="file_upload"
                 className="appearance-none hidden"
-               
               />
             </span>
             <img src={upload} alt="upload" />
 
-            <AiOutlineCamera size={25} className="absolute inset-9 text-white" />
+            <AiOutlineCamera
+              size={25}
+              className="absolute inset-9 text-white"
+            />
           </div>
 
           <div className="flex cursor-pointer items-center space-x-[30px] ">
@@ -65,11 +69,12 @@ const ProfileForm = () => {
           <FormField title="Subscription Fee" type="number" isInput />
           <FormField title="Bio" isTextArea />
           <div className="flex items-center justify-center w-full">
-            <Link to="/dashboard">
-              <button className="bg-gradient-to-r from-[#513EFF] to-[#52E5FF] px-8 py-2.5 rounded-full border border-black">
-                Save
-              </button>
-            </Link>
+            <button
+              onClick={handleImageUpload}
+              className="bg-gradient-to-r from-[#513EFF] to-[#52E5FF] px-8 py-2.5 rounded-full border border-black"
+            >
+              Save
+            </button>
           </div>
         </div>
       </form>

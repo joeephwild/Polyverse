@@ -24,7 +24,7 @@ const Navbar = () => {
   const connectWallet = async () => {
     try {
       const wallet = await runtimeConnector.connectWallet(WALLET.METAMASK);
-      await runtimeConnector.switchNetwork(3141);
+      await runtimeConnector.switchNetwork(314159);
       createCapability();
       setAddress(wallet.address);
     } catch (error) {
