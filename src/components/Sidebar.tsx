@@ -38,8 +38,8 @@ const Sidebar = () => {
   return (
     <div className="w-[4%] h-screen border-r border-[#C4C4C4]">
       <div className="flex flex-col items-center mt-[30px] space-y-6">
-        {SideBAR.map((item) => (
-          <Link to={item.route}>
+        {SideBAR.map((item, i) => (
+          <Link key={i} to={item.route}>
             <item.icons size={25} />
           </Link>
         ))}

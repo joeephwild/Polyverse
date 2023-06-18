@@ -16,3 +16,4 @@ export { default as UserTicket } from "./UserTicket";
 export { default as Content } from "./Content";
 export { default as FormField } from "./FormField";
 export { default as ProfileForm } from "./ProfileForm";
+export { default as Fund } from "./Fund";

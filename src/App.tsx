@@ -14,15 +14,13 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
           }
        >
        </Route>
        <Route path="/dashboard/video" element={<VideoPlayer />} />
        <Route path="/ticket" element={<TicketDetails />} />
-       <Route path="/profile" element={<Profile />} />
+       <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

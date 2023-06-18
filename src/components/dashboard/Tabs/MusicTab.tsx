@@ -158,7 +158,7 @@ const MusicTab: React.FC<TableProps> = ({ songs }: any) => {
                     >
                       {song.title}
                     </span>
-                    <Link to="/profile">
+                    <Link to={`/profile/${song.artist}`}>
                     <span className="text-[#C4C4C4] text-[16px] font-medium leading-[19.32px]">
                       {song.artist}
                     </span>

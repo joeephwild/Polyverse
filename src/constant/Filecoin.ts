@@ -2,11 +2,11 @@ import PolyverseAbi from "./Polyverse.json";
 import PolyverseTokenAbi from "./PolyverseToken.json";
 import PolyverseSubscriptionAbi from "./SubscriptionContract.json";
 
-const PolyverseToken = "0xf40AF5C3Cc6e17a6CC451eB357Dd6FC430Dab4FE";
+const PolyverseToken = "0xf153245Bbe7BE3CCc9e7e8310c384988eb0F7A8d";
 
-const Polyverse = "0x1725F44b449aE325Eab71818ab6E72634Fee3f01";
+const Polyverse = "0x2f40a1f04be1a7d87e3651AD23F62B97B14D9C57";
 
-const SubscriptionContract = "0xb8c90806be2da55652232EdF8eEB817B4C70f813";
+const SubscriptionContract = "0xAa6801AA07299181ca051fD5428f4f1e3125C5a6";
 
 const PolyverseABI = PolyverseAbi.abi;
 const TokenAbi = PolyverseTokenAbi.abi;

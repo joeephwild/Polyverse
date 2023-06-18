@@ -7,6 +7,8 @@ import { TiTicket } from "react-icons/ti";
 import { IconType } from "react-icons/lib";
 import { ethers } from "ethers";
 import { usePolyverseContext } from "../../context/Auth";
+import Fund from "../Fund";
+import { useAddress } from "@thirdweb-dev/react";
 
 interface Link {
   icons: IconType;
@@ -15,19 +17,18 @@ interface Link {
 }
 
 const DNavbar = () => {
-  const { address, setAddress } = usePolyverseContext();
+  const { userBalance } = usePolyverseContext();
+  const address = useAddress()
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openModals, setOpenModals] = useState(false);
 
-  useEffect(() => {
-    const getEnsName = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-     const name = await provider.lookupAddress("0x5555763613a12D8F3e73be831DFf8598089d3dCa");
-     console.log(name)
-    };
-  
-    getEnsName()
-  }, [])
- 
+  const open = () => {
+    setOpenModals(true);
+  };
+
+  const close = () => {
+    setOpenModals(false);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -80,21 +81,24 @@ const DNavbar = () => {
               <div className="flex items-center justify-between px-4 py-2.5">
                 <span className="text-xs">Wallet Balance</span>
                 <button className="bg-[#D9D9D9] text-white text-xs flex items-center space-x-3 px-2 py-1.5 rounded-full">
-                  0x0000
+                  {address?.slice(0, 6)}...{address?.slice(36, 45)}
                   <div className="bg-green-500 w-4 h-4 rounded-full" />
                 </button>
               </div>
               <span className="text-center items-center flex justify-center mb-5 text-[20px] font-semibold">
-                10.00 USD
+                {Number(userBalance)} PVT
               </span>
-              <button className="w-full bg-gradient-to-r from-[#513EFF] to-[#52E5FF] text-white text-center items-center px-9 py-4.5  h-[49px]">
+              <button
+                onClick={() => setOpenModals(true)}
+                className="w-full bg-gradient-to-r from-[#513EFF] to-[#52E5FF] text-white text-center items-center px-9 py-4.5  h-[49px]"
+              >
                 Add funds
               </button>
             </div>
 
             <div className="flex flex-col px-5 py-2.5 space-y-6 mt-3 items-start">
-              {Links.map((item) => (
-                <div className="flex items-center space-x-2">
+              {Links.map((item, i) => (
+                <div key={i} className="flex items-center space-x-2">
                   <item.icons size={26} />
                   <span>{item.title}</span>
                 </div>
@@ -106,8 +110,17 @@ const DNavbar = () => {
           </div>
         )}
         <button className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]">
-          {address.slice(0,9)}...
+          {address?.slice(0, 9)}...
         </button>
+
+        {openModals && (
+          <Fund
+            modalOpen={openModals}
+            onClose={close}
+            openModal={open}
+            setModalOpen={setOpenModals}
+          />
+        )}
       </div>
     </nav>
   );
