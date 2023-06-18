@@ -16,6 +16,8 @@ import home from './home.png'
 import mail from './mail.png'
 import time from './time.png'
 
+import loader from './loader.svg'
+
 export {
     logo,
     capa,
@@ -31,5 +33,6 @@ export {
     page5,
     home,
     mail,
-    time
+    time,
+    loader
 }

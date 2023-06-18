@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import React, { useState } from "react";
 import Modal from "react-responsive-modal";
 import FormField from "./FormField";
-import { usePolyverseContext } from "../context/Auth";
 import { useProtocolContext } from "../context";
 
 interface Props {
@@ -15,16 +14,10 @@ interface Props {
 const Fund = ({ onClose, openModal, setModalOpen, modalOpen }: Props) => {
   const [inputAddress, setInputAddress] = useState("");
   const [inputAmount, setInputAmount] = useState(0);
-  const { mint } = usePolyverseContext();
   const { sendNotification } = useProtocolContext();
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await mint(inputAmount);
-    sendNotification(
-      "Token sent Succesfully",
-      `${inputAmount.toString()} PVT sent to you`
-    );
+ 
   };
 
   return (

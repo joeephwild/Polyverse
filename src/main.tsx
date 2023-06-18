@@ -10,10 +10,11 @@ import {
   studioProvider,
 } from "@livepeer/react";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { PolyverseProvider } from "./context/Auth";
-import { FilecoinCalibrationTestnet } from'@thirdweb-dev/chains'
+import { FilecoinCalibrationTestnet } from "@thirdweb-dev/chains";
 import { ProtocolProvider } from "./context";
 import { ToastContainer } from "react-toastify";
+import { PolyverseProvider } from "./context/PolyveseProvider";
+import { SubscriptionProvider } from "./context/SubscriptionProvider";
 
 const client = createReactClient({
   provider: studioProvider({ apiKey: "yourStudioApiKey" }),
@@ -30,11 +31,13 @@ const livepeerTheme: ThemeConfig = {
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <ThirdwebProvider activeChain={FilecoinCalibrationTestnet}>
+  <ThirdwebProvider>
     <LivepeerConfig client={client} theme={livepeerTheme}>
       <PolyverseProvider>
         <ProtocolProvider>
-          <App />
+          <SubscriptionProvider>
+            <App />
+          </SubscriptionProvider>
           <ToastContainer />
         </ProtocolProvider>
       </PolyverseProvider>

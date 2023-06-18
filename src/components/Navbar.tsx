@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddress, useMetamask, useSigner } from "@thirdweb-dev/react";
-import { Modal } from "react-responsive-modal";
-import { ethers } from "ethers";
 
 import "react-responsive-modal/styles.css";
 import { FaBell } from "react-icons/fa";
-import { Mumbai } from "@thirdweb-dev/chains";
+import { Extension, RuntimeConnector, WALLET } from "@dataverse/runtime-connector";
+import { FilecoinCalibrationTestnet } from "@thirdweb-dev/chains";
 
 import { logo } from "../assets";
 import { useProtocolContext } from "../context";
-import FormField from "./FormField";
 import Fund from "./Fund";
 
 const Navbar: React.FC = () => {
@@ -19,7 +17,7 @@ const Navbar: React.FC = () => {
   const { subscribeToNotification, subscribed } = useProtocolContext();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const route = useNavigate()
+  const route = useNavigate();
 
   const openModal = () => {
     setModalOpen(true);
@@ -57,25 +55,16 @@ const Navbar: React.FC = () => {
         <button
           onClick={() => {
             connect({
-              chainId: Mumbai.chainId,
-            });
-            if(address){
-              route("/dashboard")
+              chainId: FilecoinCalibrationTestnet.chainId
+            })
+            if (address) {
+              route("/dashboard");
             }
           }}
           className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]"
         >
-          {!address
-            ? "Connect Wallet"
-            : `Dashboard`}
+          {!address ? "Connect Wallet" : `Dashboard`}
         </button>
-        {/**modal */}
-        <Fund
-          onClose={closeModal}
-          setModalOpen={setModalOpen}
-          openModal={openModal}
-          modalOpen={modalOpen}
-        />
       </div>
     </nav>
   );

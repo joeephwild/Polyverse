@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import FormField from "./FormField";
-import { usePolyverseContext } from "../context/Auth";
 import { pen, upload } from "../assets";
 import { AiOutlineCamera } from "react-icons/ai";
 import { useAddress } from "@thirdweb-dev/react";
@@ -8,12 +7,15 @@ import { uploadFile, uploadJsonData } from "../constant/Web3Storage";
 import { toast } from "react-toastify";
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
-import { CIDString } from "web3.storage";
 import { sendFileToIPFS } from "../constant/pinata";
+import { usePolyverse } from "../context/PolyveseProvider";
+import { useSubscription } from "../context/SubscriptionProvider";
+import Loader from "./Loader";
 
 const ProfileForm = () => {
   const address = useAddress();
-  const { addCreator, createPlan } = usePolyverseContext();
+  const { addCreator } = usePolyverse();
+  const { createPlan } = useSubscription();
   const [profileImage, setProfileImage] = useState("");
   const [name, setName] = useState("");
   const [categories, setCategories] = useState("");
@@ -41,7 +43,7 @@ const ProfileForm = () => {
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
     const cid = await sendFileToIPFS(file);
-    const ipfsPath = "https://ipfs.thirdwebcdn.com/ipfs/"+ cid;
+    const ipfsPath = "https://ipfs.thirdwebcdn.com/ipfs/" + cid;
     toast.success("upload sucessfull");
     console.log(ipfsPath);
     setProfileImage(ipfsPath);
@@ -51,35 +53,19 @@ const ProfileForm = () => {
     e.preventDefault();
     const amount = ethers.utils.parseEther(price);
     try {
-      const obj = {
-        name: name,
-        bio: bio,
-        image: profileImage,
-        catefory: categories,
-        subFee: amount,
-      };
       setIsloading(true);
-      const result = await uploadJsonData(obj);
-      await addCreator(
-        name,
-        profileImage,
-        categories,
-        bio,
-        amount
-      );
-      toast.success("Creator been added");
-      await createPlan(name, amount);
-      toast.success("Subscription plan initialized");
+      const tx = await addCreator(name, profileImage, categories, bio, amount);
+      toast.success("Account Created initialized");
       setIsloading(false);
       router("/dashboard");
-    } catch (error) {
+    } catch (error) {s
       toast.error("Transaction failed pls try again later");
     }
   };
 
   const getProfileImageUrl = () => {
     if (profileImage) {
-     // const ipfsUrl = `https://ipfs.io/ipfs/${profileImage}?filename=AvatarMaker.png`;
+      // const ipfsUrl = `https://ipfs.io/ipfs/${profileImage}?filename=AvatarMaker.png`;
       return profileImage;
     }
     return upload;
@@ -88,10 +74,15 @@ const ProfileForm = () => {
   return (
     <div className="max-w-[458px] rounded-[10px] items-center justify-center flex flex-col px-6 py-[10px] bg-[#fff]">
       {/* image upload */}
+      {isLoading && <Loader />}
       <form action="" className="w-full">
         <div className="flex flex-col mt-[20px] space-y-4 items-center">
           <div className="relative cursor-pointer">
-            <img src={getProfileImageUrl()} alt="upload" className="w-[100px] h-[100px] object-cover rounded-full" />
+            <img
+              src={getProfileImageUrl()}
+              alt="upload"
+              className="w-[100px] h-[100px] object-cover rounded-full"
+            />
 
             <AiOutlineCamera
               size={25}

@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { TbEdit } from "react-icons/tb";
 import Content from "./Content";
-import { useAddress } from "@thirdweb-dev/react";
-import { usePolyverseContext } from "../context/Auth";
+import { ethers } from "ethers";
+import { useSubscription } from "../context/SubscriptionProvider";
+import Loader from "./Loader";
 
 interface UserProfileParams {
   state: any;
@@ -21,20 +22,30 @@ interface Creator {
 }
 
 const ProfileDetail = ({ state }: UserProfileParams) => {
-  const { subscribeToArtist } = usePolyverseContext();
-  console.log(state);
+  const { subscribe, userPlans, getPlan,  setAllPlans } = useSubscription();
+  const [isLoading, setIsloading] = useState(false);
+  const [result, setResult] = useState({})
+ console.log(result)
+
+  useEffect(() => {
+  const data =  getPlan(state?.owner)
+  console.log(data)
+  }, [state?.owner])
 
   const handleSubscription = async () => {
     try {
-      alert("ongoing")
-      const tx = await subscribeToArtist(state.pid, state.cost);
+      setIsloading(true);
+      await subscribe(state.pid, state.cost);
+      setIsloading(true);
     } catch (error) {
+      setIsloading(false);
       alert(error);
     }
   };
 
   return (
     <div className="flex-1 px-6 py-2.5">
+      {isLoading && <Loader />}
       <p>Profile</p>
       <div className="flex mt-6 space-x-9 items-center justify-evenly w-full">
         <div className="flex space-x-9 items-center w-full">
@@ -56,7 +67,9 @@ const ProfileDetail = ({ state }: UserProfileParams) => {
             <span className="text-[16px] font-bold">{state?.owner}...</span>
             <span className="flex space-x-2 items-center">
               <FaRegMoneyBillAlt size={25} />
-              <p className="text-[#35F415] font-bold text-[14px]">${state.cost}</p>
+              <p className="text-[#35F415] font-bold text-[14px]">
+                ${state?.cost}
+              </p>
               <TbEdit size={25} />
             </span>
           </div>
