@@ -7,6 +7,7 @@ import Content from "./Content";
 import { ethers } from "ethers";
 import { useSubscription } from "../context/SubscriptionProvider";
 import Loader from "./Loader";
+import Subscription from "../context/SubscriptionContract.json";
 
 interface UserProfileParams {
   state: any;
@@ -22,21 +23,43 @@ interface Creator {
 }
 
 const ProfileDetail = ({ state }: UserProfileParams) => {
-  const { subscribe, userPlans, getPlan,  setAllPlans } = useSubscription();
+  const { subscribe, userPlans, filterPlansByAddress, setAllPlans } =
+    useSubscription();
   const [isLoading, setIsloading] = useState(false);
-  const [result, setResult] = useState({})
- console.log(result)
+  const [result, setResult] = useState({});
+  console.log(userPlans);
 
   useEffect(() => {
-  const data =  getPlan(state?.owner)
-  console.log(data)
-  }, [state?.owner])
+    filterPlansByAddress(state?.owner);
+  }, [state?.owner]);
 
-  const handleSubscription = async () => {
+  const handleSubscription = async (item: any, amount: any) => {
     try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // Get the contract instance
+      const contract = new ethers.Contract(
+        "0xc166789539A1c5309a9f413E829A629071361214",
+        Subscription.abi,
+        provider.getSigner()
+      );
+
+      // Estimate the gas limit
+      const gasLimit = await contract.estimateGas.subscribe(item, {
+        value: ethers.utils.parseEther(amount),
+      });
       setIsloading(true);
-      await subscribe(state.pid, state.cost);
-      setIsloading(true);
+      // Create a transaction object
+      const tx = await contract.subscribe(item, {
+        value: ethers.utils.parseEther(amount),
+        gasLimit: gasLimit,
+      });
+
+      // Wait for the transaction to be mined
+      await tx.wait();
+      setIsloading(false);
+      // Perform any additional actions after subscription
+
+      alert("Subscription successful!");
     } catch (error) {
       setIsloading(false);
       alert(error);
@@ -57,12 +80,14 @@ const ProfileDetail = ({ state }: UserProfileParams) => {
           <div className="flex space-y-3 flex-col items-start">
             <div className="flex space-x-4 items-center">
               <span className="text-[18px] font-bold">{state?.name}</span>
-              <button
-                onClick={() => handleSubscription()}
-                className="bg-[#695AF5] px-4 py-2 text-white rounded-full"
-              >
-                Subscribe
-              </button>
+              {userPlans.map((item: any) => (
+                <button
+                  onClick={() => handleSubscription(item?.pid, item?.amount)}
+                  className="bg-[#695AF5] px-4 py-2 text-white rounded-full"
+                >
+                  Subscribe
+                </button>
+              ))}
             </div>
             <span className="text-[16px] font-bold">{state?.owner}...</span>
             <span className="flex space-x-2 items-center">

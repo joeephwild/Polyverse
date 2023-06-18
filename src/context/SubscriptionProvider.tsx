@@ -20,7 +20,7 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   const [subscriptionContract, setSubscriptionContract] =
     useState<ethers.Contract>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
-  const [userPlans, setUserPlans] = useState<any>({})
+  const [userPlans, setUserPlans] = useState<any[]>([])
   const [allSubscriptions, setAllSubscriptions] = useState<any[]>([]);
 
   // Initialize the subscription contract
@@ -45,12 +45,6 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
     initializeContract();
   }, []);
 
- async function getPlan(address: any) {
-    const userPlan =allPlans.filter((item) => item.artist === address);
-    setUserPlans(userPlan)
-    return userPlan
-  }
-
   const formatDate = (date: any) => {
     const options = {
       weekday: "short",
@@ -72,12 +66,19 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
         month: formatDate(item.frequency.toNumber()),
         name: item.name,
         nftAddress: item.nftAddress,
-        pid: i,
+        pid: i + 1,
       }));
       setAllPlans(parsedPlans);
+      return parsedPlans
     } catch (error) {
       console.error("Failed to fetch plans:", error);
     }
+  };
+
+  const filterPlansByAddress = async(address: any) => {
+    const result = await fetchAllPlans()
+    const filteredPlans = result.filter((plan: any) => plan.artist === address);
+    setUserPlans(filteredPlans);
   };
 
   const address = useAddress();
@@ -169,7 +170,7 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
     subscribe,
     createPlan,
     userPlans,
-    getPlan,
+    filterPlansByAddress,
     setAllPlans
   };
 
