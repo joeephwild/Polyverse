@@ -69,12 +69,6 @@ export const PolyverseProvider: React.FC<PolyverseChildrenNode> = ({
     }
   };
 
-  useEffect(() => {
-    fetchAllCreators();
-    fetchAllEvents();
-    fetchAllTickets();
-  }, [address]);
-
   // Function to fetch all events from the contract
   const fetchAllEvents = async () => {
     try {

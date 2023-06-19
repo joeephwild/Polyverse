@@ -27,8 +27,23 @@ interface DataverseContextTypes {
     subscriptionFee: ethers.BigNumber
   ) => Promise<void>;
   createAPlan: (name: string, amount: ethers.BigNumber) => Promise<void>;
-  uploadVideo: (_title: string, _description: string, _videoFile: string, _image: string, _category: string) => Promise<void>
-  uploadMusic: (_title: string, _musicFile: string, _image: string, _category: string, _features: string) => Promise<void>
+  uploadVideo: (
+    _title: string,
+    _description: string,
+    _videoFile: string,
+    _image: string,
+    _category: string
+  ) => Promise<void>;
+  uploadMusic: (
+    _title: string,
+    _musicFile: string,
+    _image: string,
+    _category: string,
+    _features: string
+  ) => Promise<void>;
+  SubscribeToCreator: () => Promise<void>;
+  allMusic: never[];
+  allCreators: any[];
 }
 
 const DataverseContext = createContext<DataverseContextTypes | null>(null);
@@ -38,6 +53,8 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
   const runtimeConnector = new RuntimeConnector(Extension);
   const polyverseContract = "0x06Eed8DFeF03dBB02bd5B8C76E8d0a1B976CBB0A";
   const subscriptionContract = "0xc0ea179a9fC607a83E50a56d134cc58474918AAC";
+  const [allMusic, setAllMusic] = useState([]);
+  const [allCreators, setAllCreators] = useState<any[]>([]);
 
   useEffect(() => {
     const createCapability = async () => {
@@ -63,6 +80,35 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
 
     connectWallet();
   }, []);
+
+  // Function to fetch all creators from the contract
+  const fetchAllCreators = async () => {
+    try {
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: polyverseContract,
+        abi: Polyverse.abi,
+        method: "getAllCreators",
+        params: [],
+        mode: Mode.Read,
+      });
+      console.log({ res });
+      const parsedCreator = await res.map((item: any, i: any) => ({
+        owner: item.owner,
+        image: item.imageIpfs,
+        cost: ethers.utils.formatEther(item.subscriptionFee),
+        category: item.category,
+        bio: item.bio,
+        pid: i + 1,
+        name: item.name,
+        balance: item.balance.toNumber(),
+      }));
+      setAllCreators(parsedCreator);
+      console.log(parsedCreator);
+    } catch (error) {
+      console.error("Failed to fetch creators:", error);
+    }
+  };
 
   const contractCall = async (
     name: string,
@@ -166,6 +212,39 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     }
   };
 
+  const fetchAllMusic = async () => {
+    try {
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: polyverseContract,
+        abi: Polyverse.abi,
+        method: "getAllMusic",
+        params: [],
+        mode: Mode.Read,
+      });
+      console.log({ res });
+      setAllMusic(res);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
+  const fetchAllVideo = async () => {
+    try {
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: polyverseContract,
+        abi: Polyverse.abi,
+        method: "getAllVideo",
+        params: [],
+        mode: Mode.Read,
+      });
+      console.log({ res });
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
   // Function to fetch all tickets from the contract
   const fetchAllTickets = async () => {
     try {
@@ -182,9 +261,28 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     }
   };
 
+  const SubscribeToCreator = async () => {
+    try {
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: polyverseContract,
+        abi: Polyverse.abi,
+        method: "getAllEvents",
+        params: [],
+        mode: Mode.Read,
+      });
+      console.log({ res });
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
   useEffect(() => {
     fetchAllEvents();
     fetchAllTickets();
+    fetchAllMusic();
+    fetchAllVideo();
+    fetchAllCreators()
   }, [address]);
 
   const value = {
@@ -194,7 +292,10 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     contractCall,
     createAPlan,
     uploadMusic,
-    uploadVideo
+    uploadVideo,
+    SubscribeToCreator,
+    allMusic,
+    allCreators,
   };
   return (
     <DataverseContext.Provider value={value}>

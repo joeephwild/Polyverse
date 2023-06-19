@@ -10,6 +10,7 @@ import Loader from "./Loader";
 import Subscription from "../context/SubscriptionContract.json";
 import { toast } from "react-toastify";
 import { sendNotification } from "@pushprotocol/restapi/src/lib/payloads";
+import { useDataverse } from "../context/DataverseProvider";
 
 interface UserProfileParams {
   state: any;
@@ -27,6 +28,7 @@ interface Creator {
 const ProfileDetail = ({ state }: UserProfileParams) => {
   const { subscribe, userPlans, filterPlansByAddress, setAllPlans } =
     useSubscription();
+  const { SubscribeToCreator } = useDataverse();
   const [isLoading, setIsloading] = useState(false);
   const [result, setResult] = useState({});
   console.log(userPlans);
