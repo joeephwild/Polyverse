@@ -11,7 +11,7 @@ const Card = ({ content, handleClick }: Props) => {
       <div className="mr-12 ml-3 w-[250px]">
           <div onClick={handleClick} className="bg-black py-[35px] cursor-pointer hover:scale-95 transition-all min-w-[270px] h-[360px] block px-[35px]" >
           <img
-            className='!rounded-full  min-w-[200px] min-h-[200px]  object-cover'
+            className='!rounded-full  min-w-[200px] min-h-[200px] object-cover'
             src={content.image}
             alt={content.name}
           />

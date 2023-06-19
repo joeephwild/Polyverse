@@ -8,6 +8,8 @@ import { ethers } from "ethers";
 import { useSubscription } from "../context/SubscriptionProvider";
 import Loader from "./Loader";
 import Subscription from "../context/SubscriptionContract.json";
+import { toast } from "react-toastify";
+import { sendNotification } from "@pushprotocol/restapi/src/lib/payloads";
 
 interface UserProfileParams {
   state: any;
@@ -59,7 +61,7 @@ const ProfileDetail = ({ state }: UserProfileParams) => {
       setIsloading(false);
       // Perform any additional actions after subscription
 
-      alert("Subscription successful!");
+      toast.success("Subscription successful!");
     } catch (error) {
       setIsloading(false);
       alert(error);

@@ -12,7 +12,6 @@ const Creator = () => {
   console.log(allCreators)
   return (
     <div className="flex flex-wrap gap-4 w-full">
-      <span>Creator</span>
       {allCreators.map((item: any, i: any) => (
         <Card content={item} key={i} handleClick={() => handleNavigate(item)} />
       ))}

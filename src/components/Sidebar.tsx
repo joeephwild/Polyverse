@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { home, mail } from "../assets";
 import { Link } from "react-router-dom";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { BiHome } from "react-icons/bi";
 import { AiOutlineMail, AiOutlinePlusCircle } from "react-icons/ai";
 import { IconType } from "react-icons/lib";
+import Notification from "./Notification";
 
 interface Link {
   icons: IconType;
@@ -13,6 +14,7 @@ interface Link {
 }
 
 const Sidebar = () => {
+  const [openModal, setOpenModal] = useState(false);
   const SideBAR: Link[] = [
     {
       title: "Home",
@@ -22,27 +24,35 @@ const Sidebar = () => {
     {
       title: "message",
       icons: AiOutlineMail,
-      route: "/",
+      route: "",
     },
     {
       title: "notification",
       icons: IoMdNotificationsOutline,
-      route: "/",
+      route: "",
     },
     {
       title: "create",
       icons: AiOutlinePlusCircle,
-      route: "/",
+      route: "",
     },
   ];
+
   return (
     <div className="w-[4%] h-screen border-r border-[#C4C4C4]">
       <div className="flex flex-col items-center mt-[30px] space-y-6">
-        {SideBAR.map((item, i) => (
-          <Link key={i} to={item.route}>
-            <item.icons size={25} />
-          </Link>
-        ))}
+        <Link to="/dashboard">
+          <BiHome size={25} />
+        </Link>
+
+        <AiOutlineMail size={25} />
+        <IoMdNotificationsOutline
+          onClick={() => setOpenModal(!openModal)}
+          size={25}
+        />
+        <Link to="/upload">
+          <AiOutlinePlusCircle size={25} />
+        </Link>
       </div>
     </div>
   );

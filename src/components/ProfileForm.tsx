@@ -11,11 +11,11 @@ import { sendFileToIPFS } from "../constant/pinata";
 import { usePolyverse } from "../context/PolyveseProvider";
 import { useSubscription } from "../context/SubscriptionProvider";
 import Loader from "./Loader";
+import { useDataverse } from "../context/DataverseProvider";
 
 const ProfileForm = () => {
   const address = useAddress();
   const { addCreator } = usePolyverse();
-  const { createPlan } = useSubscription();
   const [profileImage, setProfileImage] = useState("");
   const [name, setName] = useState("");
   const [categories, setCategories] = useState("");
@@ -23,6 +23,7 @@ const ProfileForm = () => {
   const [price, setPrice] = useState("");
   const [data, setData] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const { contractCall } = useDataverse() 
   const router = useNavigate();
 
   const category = [
@@ -54,11 +55,11 @@ const ProfileForm = () => {
     const amount = ethers.utils.parseEther(price);
     try {
       setIsloading(true);
-      const tx = await addCreator(name, profileImage, categories, bio, amount);
+      const tx = await contractCall(name, profileImage, categories, bio, amount);
       toast.success("Account Created initialized");
       setIsloading(false);
       router("/dashboard");
-    } catch (error) {s
+    } catch (error) {
       toast.error("Transaction failed pls try again later");
     }
   };

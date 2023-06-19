@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Navbar, ProfileForm } from "../components";
 import { useAddress, useMetamask } from "@thirdweb-dev/react";
+import { useDataverse } from "../context/DataverseProvider";
 
 const SignIn = () => {
   const connect = useMetamask();
-  const address = useAddress();
+ const { address} = useDataverse()
 
   return (
     <>

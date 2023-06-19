@@ -11,6 +11,8 @@ import FormField from "../FormField";
 import { useSubscription } from "../../context/SubscriptionProvider";
 import { ethers } from "ethers";
 import Loader from "../Loader";
+import { useDataverse } from "../../context/DataverseProvider";
+import { WALLET } from "@dataverse/runtime-connector";
 
 interface Link {
   icons: IconType;
@@ -19,13 +21,13 @@ interface Link {
 }
 
 const DNavbar = () => {
-  const address = useAddress();
+  const { address, runtimeConnector, setAddress } = useDataverse()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openModals, setOpenModals] = useState(false);
   const [artistName, setArtistName] = useState("");
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { createPlan } = useSubscription();
+  const { createAPlan } = useDataverse();
 
   const open = () => {
     setOpenModals(true);
@@ -48,7 +50,7 @@ const DNavbar = () => {
       e.preventDefault();
       const price = ethers.utils.parseEther(amount);
       setIsLoading(true);
-      await createPlan(artistName, price);
+      await createAPlan(artistName, price);
       closeModal();
       setIsLoading(false);
     } catch (error) {
@@ -74,6 +76,28 @@ const DNavbar = () => {
       route: "",
     },
   ];
+
+  
+  const createCapability = async () => {
+    const pkh = await runtimeConnector?.createCapability({
+      app: "PolyverseTest",
+      wallet: WALLET.METAMASK, // optional, if not connected
+    });
+    console.log(pkh);
+    return pkh;
+  };
+
+  const connectWallet = async () => {
+    try {
+      const wallet = await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      await runtimeConnector?.switchNetwork(314159);
+      createCapability();
+      console.log(wallet);
+      setAddress(wallet?.address);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <nav className="w-full flex items-center h-16 justify-between px-12 py-6.5 border-b border-[#ffffff]">
       <Link to="/">
@@ -131,9 +155,12 @@ const DNavbar = () => {
           >
             create Plan
           </button>
-          <button className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]">
-            {address?.slice(0, 9)}...
-          </button>
+          <button
+          onClick={connectWallet}
+          className="border-2 border-[#fff] px-6 py-1.5 rounded-full text-[#fff] font-medium text-[16px]"
+        >
+          {!address ? "Connect Wallet" : `${address.slice(0, 9)}`}
+        </button>
         </div>
       </div>
       {openModals && (

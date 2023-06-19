@@ -5,6 +5,13 @@ import { ethers } from "ethers";
 import SubscriptionContractABI from "./SubscriptionContract.json";
 import { sendNotification } from "@pushprotocol/restapi/src/lib/payloads";
 import { useAddress } from "@thirdweb-dev/react";
+import {
+  Extension,
+  Mode,
+  RuntimeConnector,
+  WALLET,
+} from "@dataverse/runtime-connector";
+import { toast } from "react-toastify";
 
 interface PolyverseChildrenNode {
   children: React.ReactNode;
@@ -20,33 +27,32 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   const [subscriptionContract, setSubscriptionContract] =
     useState<ethers.Contract>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
-  const [userPlans, setUserPlans] = useState<any[]>([])
+  const [userPlans, setUserPlans] = useState<any[]>([]);
   const [allSubscriptions, setAllSubscriptions] = useState<any[]>([]);
+  const runtimeConnector = new RuntimeConnector(Extension);
+  const subscriptionContractAddress =
+    "0xc0ea179a9fC607a83E50a56d134cc58474918AAC";
 
-  // Initialize the subscription contract
-  useEffect(() => {
-    const initializeContract = async () => {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const signer = provider.getSigner();
-        const contractAddress = "0xc166789539A1c5309a9f413E829A629071361214";
-        const contract = new ethers.Contract(
-          contractAddress,
-          SubscriptionContractABI.abi,
-          signer
-        );
-        setSubscriptionContract(contract);
-      } catch (error) {
-        console.error("Failed to initialize contract:", error);
-      }
-    };
-
-    initializeContract();
-  }, []);
+  const subscribe = async (planId: number, cost: ethers.BigNumber) => {
+    try {
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: subscriptionContractAddress,
+        abi: SubscriptionContractABI.abi,
+        method: "subscribe",
+        params: [planId, cost],
+        mode: Mode.Write,
+      });
+      toast.success("Sucessfully Subscribed");
+      console.log({ res });
+    } catch (error) {
+      toast.error("Subscription Failed");
+      console.log(error);
+    }
+  };
 
   const formatDate = (date: any) => {
-    const options = {
+    const options: DateTimeFormatOptions = {
       weekday: "short",
       day: "numeric",
       month: "short",
@@ -59,8 +65,15 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   // Function to fetch all plans
   const fetchAllPlans = async () => {
     try {
-      const totalPlans = await subscriptionContract?.getAllPlan();
-      const parsedPlans = await totalPlans.map((item: any, i: any) => ({
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: subscriptionContractAddress,
+        abi: SubscriptionContractABI.abi,
+        method: "getAllPlan",
+        params: [],
+        mode: Mode.Read,
+      });
+      const parsedPlans = await res.map((item: any, i: any) => ({
         amount: ethers.utils.formatEther(item.amount),
         artist: item.artist,
         month: formatDate(item.frequency.toNumber()),
@@ -69,14 +82,14 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
         pid: i + 1,
       }));
       setAllPlans(parsedPlans);
-      return parsedPlans
+      return parsedPlans;
     } catch (error) {
       console.error("Failed to fetch plans:", error);
     }
   };
 
-  const filterPlansByAddress = async(address: any) => {
-    const result = await fetchAllPlans()
+  const filterPlansByAddress = async (address: any) => {
+    const result = await fetchAllPlans();
     const filteredPlans = result.filter((plan: any) => plan.artist === address);
     setUserPlans(filteredPlans);
   };
@@ -91,16 +104,15 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   // Function to check if a subscriber is subscribed to a plan
   const isSubscriber = async (artistAddress: string, planId: number) => {
     try {
-      const accounts = await window.ethereum.request({
-        method: "eth_accounts",
+      await runtimeConnector?.connectWallet(WALLET.METAMASK);
+      const res = await runtimeConnector?.contractCall({
+        contractAddress: subscriptionContractAddress,
+        abi: SubscriptionContractABI.abi,
+        method: "isSubscriber",
+        params: [],
+        mode: Mode.Read,
       });
-      const subscriberAddress = accounts[0];
-      const isSubscribed = await subscriptionContract?.isSubscriber(
-        artistAddress,
-        subscriberAddress,
-        planId
-      );
-      return isSubscribed;
+      return res;
     } catch (error) {
       console.error("Failed to check subscription:", error);
       return false;
@@ -117,47 +129,6 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
     }
   };
 
-  // Function to cancel a subscription plan
-  const cancel = async (planId: number) => {
-    try {
-      await subscriptionContract?.cancel(planId);
-      // Perform any additional actions after cancellation
-    } catch (error) {
-      console.error("Failed to cancel subscription:", error);
-    }
-  };
-
-  const subscribe = async (planId: number, cost: any) => {
-    try {
-      // Estimate the gas limit
-      const gasLimit = await subscriptionContract?.estimateGas.subscribe(
-        planId,
-        {
-          value: ethers.utils.parseEther(cost),
-        }
-      );
-
-      // Subscribe to the plan
-      await subscriptionContract?.subscribe(planId, {
-        value: ethers.utils.parseEther(cost),
-        gasLimit: gasLimit,
-      });
-      // Perform any additional actions after subscription
-    } catch (error) {
-      console.error("Failed to subscribe:", error);
-    }
-  };
-
-  // Function to create a new plan
-  const createPlan = async (name: string, amount: number) => {
-    try {
-      await subscriptionContract?.createPlan(name, amount);
-      // Perform any additional actions after plan creation
-    } catch (error) {
-      console.error("Failed to create plan:", error);
-    }
-  };
-
   // Define the contract functions you want to expose in the context
   const contextValue = {
     subscriptionContract,
@@ -166,12 +137,10 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
     fetchAllPlans,
     isSubscriber,
     pay,
-    cancel,
     subscribe,
-    createPlan,
     userPlans,
     filterPlansByAddress,
-    setAllPlans
+    setAllPlans,
   };
 
   return (

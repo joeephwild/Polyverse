@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Polyverse from "./Polyverse.json";
 import { useAddress } from "@thirdweb-dev/react";
-import { useSubscription } from "./SubscriptionProvider";
 
 interface PolyverseChildrenNode {
   children: React.ReactNode;

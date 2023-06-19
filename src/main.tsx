@@ -15,6 +15,7 @@ import { ProtocolProvider } from "./context";
 import { ToastContainer } from "react-toastify";
 import { PolyverseProvider } from "./context/PolyveseProvider";
 import { SubscriptionProvider } from "./context/SubscriptionProvider";
+import { DataverseProvider } from "./context/DataverseProvider";
 
 const client = createReactClient({
   provider: studioProvider({ apiKey: "yourStudioApiKey" }),
@@ -36,7 +37,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <PolyverseProvider>
         <ProtocolProvider>
           <SubscriptionProvider>
-            <App />
+            <DataverseProvider>
+              <App />
+            </DataverseProvider>
           </SubscriptionProvider>
           <ToastContainer />
         </ProtocolProvider>
