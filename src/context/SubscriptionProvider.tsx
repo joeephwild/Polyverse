@@ -31,7 +31,7 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   const [allSubscriptions, setAllSubscriptions] = useState<any[]>([]);
   const runtimeConnector = new RuntimeConnector(Extension);
   const subscriptionContractAddress =
-    "0xc0ea179a9fC607a83E50a56d134cc58474918AAC";
+    "0x208C9272157776c7a737bE149a6B18b9970017f2";
 
   const subscribe = async (planId: number, cost: ethers.BigNumber) => {
     try {
@@ -52,7 +52,7 @@ export const SubscriptionProvider: React.FC<PolyverseChildrenNode> = ({
   };
 
   const formatDate = (date: any) => {
-    const options: DateTimeFormatOptions = {
+    const options: any = {
       weekday: "short",
       day: "numeric",
       month: "short",

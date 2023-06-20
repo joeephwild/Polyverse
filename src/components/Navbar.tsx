@@ -72,7 +72,7 @@ const Navbar = () => {
 
       <div className=" flex items-center space-x-4">
         <button
-          onClick={subscribeToNotification}
+          //onClick={subscribeToNotification}
           className={`${subscribed ? "text-blue-700" : "text-white"} text-xl `}
         >
           <FaBell />

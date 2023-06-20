@@ -52,7 +52,7 @@ const ProfileForm = () => {
 
   const handleUpload = async (e: any) => {
     e.preventDefault();
-    const amount = ethers.utils.parseEther(price);
+    const amount = ethers.utils.parseEther("6");
     try {
       setIsloading(true);
       const tx = await contractCall(name, profileImage, categories, bio, amount);
@@ -114,13 +114,6 @@ const ProfileForm = () => {
             isCategory
             value={categories}
             handleChange={(e: any) => setCategories(e.target.value)}
-          />
-          <FormField
-            title="Subscription Fee"
-            type="number"
-            isInput
-            value={price}
-            handleChange={(e: any) => setPrice(e.target.value)}
           />
           <FormField
             title="Bio"

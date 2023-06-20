@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Polyverse from "./Polyverse.json";
 import { useAddress } from "@thirdweb-dev/react";
+import { useDataverse } from "./DataverseProvider";
 
 interface PolyverseChildrenNode {
   children: React.ReactNode;
@@ -21,7 +22,6 @@ export const PolyverseProvider: React.FC<PolyverseChildrenNode> = ({
   const [allCreators, setAllCreators] = useState<any[]>([]);
   const [allEvents, setAllEvents] = useState<any[]>([]);
   const [allTickets, setAllTickets] = useState<any[]>([]);
-  const address = useAddress();
 
   // Initialize the contract instance
   useEffect(() => {
@@ -29,8 +29,8 @@ export const PolyverseProvider: React.FC<PolyverseChildrenNode> = ({
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const contractAddress = "0x5d9A44DF62d97Fa999EcC1754d70ED6a7E57fB37";
-
+        const contractAddress = "0x06Eed8DFeF03dBB02bd5B8C76E8d0a1B976CBB0A";
+       console.log(signer)
         const contract = new ethers.Contract(
           contractAddress,
           Polyverse.abi,

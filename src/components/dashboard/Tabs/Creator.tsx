@@ -9,8 +9,8 @@ const Creator = () => {
   const handleNavigate = (item: any) => {
     navigate(`/profile/${item.name}`, { state: item });
   };
- // const { allCreators } = usePolyverse();
-  const { allCreators} = useDataverse()
+ //const { allCreators } = usePolyverse();
+  const { allCreators } = useDataverse()
   console.log(allCreators)
   return (
     <div className="flex flex-wrap gap-4 w-full">

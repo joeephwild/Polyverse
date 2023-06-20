@@ -43,7 +43,17 @@ interface DataverseContextTypes {
   ) => Promise<void>;
   SubscribeToCreator: () => Promise<void>;
   allMusic: never[];
-  allCreators: any[];
+  allCreators: never[];
+  listEvent: (
+    name: string,
+    cost: number,
+    maxTickets: number,
+    date: string,
+    time: string,
+    location: string,
+    image: string,
+    description: string
+  ) => Promise<void>;
 }
 
 const DataverseContext = createContext<DataverseContextTypes | null>(null);
@@ -51,10 +61,10 @@ const DataverseContext = createContext<DataverseContextTypes | null>(null);
 export const DataverseProvider = ({ children }: DataverseChildren) => {
   const [address, setAddress] = useState("");
   const runtimeConnector = new RuntimeConnector(Extension);
-  const polyverseContract = "0x06Eed8DFeF03dBB02bd5B8C76E8d0a1B976CBB0A";
+  const polyverseContract = "0x34dc0e233a1b2bd5D75817Ac1F5d7CC7BCBdCd55";
   const subscriptionContract = "0xc0ea179a9fC607a83E50a56d134cc58474918AAC";
   const [allMusic, setAllMusic] = useState([]);
-  const [allCreators, setAllCreators] = useState<any[]>([]);
+  const [allCreators, setAllCreators] = useState<[]>([]);
 
   useEffect(() => {
     const createCapability = async () => {
@@ -92,8 +102,8 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
         params: [],
         mode: Mode.Read,
       });
-      console.log({ res });
-      const parsedCreator = await res.map((item: any, i: any) => ({
+      console.log(res);
+      const parsedCreator = await res?.map((item: any, i: any) => ({
         owner: item.owner,
         image: item.imageIpfs,
         cost: ethers.utils.formatEther(item.subscriptionFee),
@@ -103,8 +113,7 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
         name: item.name,
         balance: item.balance.toNumber(),
       }));
-      setAllCreators(parsedCreator);
-      console.log(parsedCreator);
+      setAllCreators(res);
     } catch (error) {
       console.error("Failed to fetch creators:", error);
     }
@@ -134,14 +143,16 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     maxTickets: number,
     date: string,
     time: string,
-    location: string
+    location: string,
+    image: string,
+    description: string
   ) => {
     await runtimeConnector?.connectWallet(WALLET.METAMASK);
     const res = await runtimeConnector?.contractCall({
       contractAddress: polyverseContract,
       abi: Polyverse.abi,
       method: "listEvent",
-      params: [name, cost, maxTickets, date, time, location],
+      params: [name, cost, maxTickets, date, time, location, image, description],
       mode: Mode.Write,
     });
     console.log({ res });
@@ -282,7 +293,7 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     fetchAllTickets();
     fetchAllMusic();
     fetchAllVideo();
-    fetchAllCreators()
+    fetchAllCreators();
   }, [address]);
 
   const value = {
@@ -296,6 +307,7 @@ export const DataverseProvider = ({ children }: DataverseChildren) => {
     SubscribeToCreator,
     allMusic,
     allCreators,
+    listEvent
   };
   return (
     <DataverseContext.Provider value={value}>
